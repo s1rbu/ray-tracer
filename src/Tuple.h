@@ -72,6 +72,10 @@ public:
         return {x / other, y / other, z / other, w / other};
     }
 
+    // Tuple operator*(const Tuple &other) const {
+    //     return {x * other.x, y * other.y, z * other.z, w * other.w};
+    // }
+
     friend std::ostream &operator<<(std::ostream &os, const Tuple &tuple) {
         if (tuple.isPoint()) {
             os << "Point: " << tuple.x << " " << tuple.y << " " << tuple.z << " " << tuple.w;
