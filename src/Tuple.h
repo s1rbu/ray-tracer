@@ -10,6 +10,8 @@ class Tuple {
     double x, y, z, w;
 
 public:
+    Tuple() = default;
+
     Tuple(const double x_, const double y_, const double z_, const double w_) : x(x_), y(y_), z(z_), w(w_) {
     }
 
@@ -27,6 +29,22 @@ public:
 
     double getW() const {
         return w;
+    }
+
+    void setX(const double x_) {
+        this->x = x_;
+    }
+
+    void setY(const double y_) {
+        this->y = y_;
+    }
+
+    void setZ(const double z_) {
+        this->z = z_;
+    }
+
+    void setW(const double w_) {
+        this->w = w_;
     }
 
     bool isPoint() const {
