@@ -19,6 +19,10 @@ public:
         this->pixels = std::vector<std::vector<Color> >(height, std::vector<Color>(width, Color(0.0, 0.0, 0.0)));
     }
 
+    Canvas(const int width_, const int height_, const std::vector<std::vector<Color> > &pixels_) : width(width_),
+        height(height_), pixels(pixels_) {
+    }
+
     int getWidth() const {
         return this->width;
     }
@@ -31,7 +35,7 @@ public:
         return this->pixels[y][x];
     }
 
-    void writePixel(const int x, const int y, const Color color) {
+    void writePixel(const int x, const int y, const Color &color) {
         this->pixels[y][x] = color;
     }
 };
