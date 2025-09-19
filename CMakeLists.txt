@@ -11,9 +11,13 @@ add_executable(ray_tracer main.cpp
         src/Vector.h
         src/Vector.cpp
         src/Projectile.h
-        src/Environment.h)
+        src/Environment.h
+        src/Color.h
+        src/Canvas.h
+        src/CanvasUtils.h)
 
 add_executable(ray_tracer_tests
         tests/test_tuples.cpp
         src/Tuple.h
+        tests/test_canvas.cpp
 )

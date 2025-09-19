@@ -9,6 +9,9 @@ public:
     Vector(const double x, const double y, const double z) : Tuple(x, y, z, 0.0) {
     }
 
+    explicit Vector(const Tuple &tuple) : Tuple(tuple) {
+    }
+
     Vector operator+(const Vector &other) const {
         return {
             getX() + other.getX(),
