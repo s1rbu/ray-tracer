@@ -23,4 +23,5 @@ add_executable(ray_tracer_tests
         src/Tuple.h
         tests/test_canvas.cpp
         tests/test_matrices.cpp
+        tests/test_transformations.cpp
 )
