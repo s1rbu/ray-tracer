@@ -16,6 +16,11 @@ add_executable(ray_tracer main.cpp
         src/Canvas.h
         src/CanvasUtils.h
         src/Matrix.h
+        src/Ray.h
+        src/Sphere.h
+        src/Intersection.h
+        src/Object.h
+        src/Intersections.h
 )
 
 add_executable(ray_tracer_tests
@@ -24,4 +29,5 @@ add_executable(ray_tracer_tests
         tests/test_canvas.cpp
         tests/test_matrices.cpp
         tests/test_transformations.cpp
+        tests/test_rays.cpp
 )
