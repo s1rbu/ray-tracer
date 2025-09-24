@@ -231,6 +231,18 @@ public:
 
         return M;
     }
+
+    static Matrix shearing(const double xY, const double xZ, const double yX, const double yZ, const double zX, const double zY) {
+        Matrix M = identity();
+        M.data[0][1] = xY;
+        M.data[0][2] = xZ;
+        M.data[1][0] = yX;
+        M.data[1][2] = yZ;
+        M.data[2][0] = zX;
+        M.data[2][1] = zY;
+
+        return M;
+    }
 };
 
 #endif //RAY_TRACER_MATRIX_H
