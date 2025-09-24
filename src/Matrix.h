@@ -1,6 +1,9 @@
 #ifndef RAY_TRACER_MATRIX_H
 #define RAY_TRACER_MATRIX_H
 #include <vector>
+#include <cmath>
+
+#include "Point.h"
 #include "Tuple.h"
 
 class Matrix {
@@ -179,6 +182,54 @@ public:
         }
 
         return os;
+    }
+
+    static Matrix translation(const double x, const double y, const double z) {
+        Matrix M = identity();
+        M.data[0][3] = x;
+        M.data[1][3] = y;
+        M.data[2][3] = z;
+
+        return M;
+    }
+
+    static Matrix scaling(const double x, const double y, const double z) {
+        Matrix M = identity();
+        M.data[0][0] = x;
+        M.data[1][1] = y;
+        M.data[2][2] = z;
+
+        return M;
+    }
+
+    static Matrix rotationX(const double r) {
+        Matrix M = identity();
+        M.data[1][1] = cos(r);
+        M.data[1][2] = -sin(r);
+        M.data[2][1] = sin(r);
+        M.data[2][2] = cos(r);
+
+        return M;
+    }
+
+    static Matrix rotationY(const double r) {
+        Matrix M = identity();
+        M.data[0][0] = cos(r);
+        M.data[0][2] = sin(r);
+        M.data[2][0] = -sin(r);
+        M.data[2][2] = cos(r);
+
+        return M;
+    }
+
+    static Matrix rotationZ(const double r) {
+        Matrix M = identity();
+        M.data[0][0] = cos(r);
+        M.data[0][1] = -sin(r);
+        M.data[1][0] = sin(r);
+        M.data[1][1] = cos(r);
+
+        return M;
     }
 };
 
