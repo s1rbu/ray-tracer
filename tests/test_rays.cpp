@@ -130,3 +130,55 @@ TEST_CASE("The hit is always the lowest nonnegative intersection") {
 
     REQUIRE(*i == i4);
 }
+
+TEST_CASE("Translating a ray") {
+    const Ray r(Point(1, 2, 3), Vector(0, 1, 0));
+    const Matrix m = Matrix::translation(3, 4, 5);
+    const Ray r2 = Ray::transform(r, m);
+
+    REQUIRE(r2.getOrigin() == Point(4,6,8));
+    REQUIRE(r2.getDirection() == Vector(0,1,0));
+}
+
+TEST_CASE("Scaling a ray") {
+    const Ray r(Point(1, 2, 3), Vector(0, 1, 0));
+    const Matrix m = Matrix::scaling(2, 3, 4);
+    const Ray r2 = Ray::transform(r, m);
+
+    REQUIRE(r2.getOrigin() == Point(2,6,12));
+    REQUIRE(r2.getDirection() == Vector(0,3,0));
+}
+
+TEST_CASE("A sphere's default transformation") {
+    const Sphere s;
+
+    REQUIRE(s.getTransform() == Matrix::identity());
+}
+
+TEST_CASE("Changing a sphere's transformation") {
+    Sphere s;
+    const Matrix m = Matrix::translation(2, 3, 4);
+    s.setTransform(m);
+
+    REQUIRE(s.getTransform() == m);
+}
+
+TEST_CASE("Intersecting a scaled sphere with a ray") {
+    const Ray r(Point(0, 0, -5), Vector(0, 0, 1));
+    Sphere s;
+    s.setTransform(Matrix::scaling(2, 2, 2));
+    const std::vector<Intersection> xs = Sphere::intersect(s, r);
+
+    REQUIRE(xs.size() == 2);
+    REQUIRE(xs[0].getT() == 3);
+    REQUIRE(xs[1].getT() == 7);
+}
+
+TEST_CASE("Intersecting a translated sphere with a ray") {
+    const Ray r(Point(0, 0, -5), Vector(0, 0, 1));
+    Sphere s;
+    s.setTransform(Matrix::translation(5, 0, 0));
+    const std::vector<Intersection> xs = Sphere::intersect(s, r);
+
+    REQUIRE(xs.size() == 0);
+}

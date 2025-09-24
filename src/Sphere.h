@@ -5,15 +5,18 @@
 #include "Ray.h"
 
 class Sphere : public Object {
+    Matrix transform = Matrix::identity();
+
 public:
     Sphere() {
     }
 
     static std::vector<Intersection> intersect(const Sphere &sphere, const Ray &ray) {
-        const Vector sphereToRay = ray.getOrigin() - Point(0, 0, 0);
+        const Ray ray2 = Ray::transform(ray, Matrix::inverse(sphere.getTransform()));
+        const Vector sphereToRay = ray2.getOrigin() - Point(0, 0, 0);
 
-        const double a = Vector::dot(ray.getDirection(), ray.getDirection());
-        const double b = 2 * Vector::dot(ray.getDirection(), sphereToRay);
+        const double a = Vector::dot(ray2.getDirection(), ray2.getDirection());
+        const double b = 2 * Vector::dot(ray2.getDirection(), sphereToRay);
         const double c = Vector::dot(sphereToRay, sphereToRay) - 1;
 
         const double discriminant = b * b - 4 * a * c;
@@ -31,6 +34,14 @@ public:
 
     bool operator==(const Sphere &other) const {
         return true;
+    }
+
+    Matrix getTransform() const {
+        return transform;
+    }
+
+    void setTransform(const Matrix &other) {
+        transform = other;
     }
 };
 

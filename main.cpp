@@ -3,7 +3,9 @@
 #include "Projectile.h"
 #include <fstream>
 #include "CanvasUtils.h"
+#include "Intersection.h"
 #include "Matrix.h"
+#include "Sphere.h"
 
 std::ofstream fout("output.ppm");
 
@@ -42,8 +44,41 @@ void chapter3() {
     fout << canvas2ppm(canvas);
 }
 
+void chapter5() {
+    const Point rayOrigin(0, 0, -5);
+    double wallZ = 10.0;
+    double wallSize = 7.0;
+    int canvasPixels = 100;
+    double pixelSize = wallSize / canvasPixels;
+    double half = wallSize / 2.0;
+
+    Canvas canvas(canvasPixels, canvasPixels);
+    const Color color(1, 0, 0);
+    Sphere s;
+    // s.setTransform(Matrix::scaling(1,0.5,1));
+    // s.setTransform(Matrix::scaling(0.5,1,1));
+    // s.setTransform(Matrix::rotationZ(std::numbers::pi/4) * Matrix::scaling(0.5,1,1));
+    // s.setTransform(Matrix::shearing(1,0,0,0,0,0) * Matrix::scaling(0.5,1,1));
+
+    for (int y = 0; y < canvasPixels; y++) {
+        double worldY = half - pixelSize * y;
+        for (int x = 0; x < canvasPixels; x++) {
+            double worldX = -half + pixelSize * x;
+            Point position(worldX, worldY, wallZ);
+            Ray r(rayOrigin, Vector::normalize(position - rayOrigin));
+            std::vector<Intersection> xs = Sphere::intersect(s, r);
+            if (xs.size() > 0) {
+                canvas.writePixel(x, y, color);
+            }
+        }
+    }
+
+    fout << canvas2ppm(canvas);
+}
+
 int main() {
     // chapter2();
-    chapter3();
+    // chapter3();
+    chapter5();
     return 0;
 }
