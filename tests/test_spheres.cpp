@@ -52,3 +52,19 @@ TEST_CASE("Computing the normal on a transformed sphere") {
 
     REQUIRE(n == Vector(0, 0.97014, -0.24254));
 }
+
+TEST_CASE("A sphere has a default material") {
+    const Sphere s;
+    const Material m = s.getMaterial();
+
+    REQUIRE(m == Material());
+}
+
+TEST_CASE("A sphere may be assigned a material") {
+    Sphere s;
+    Material m;
+    m.setAmbient(1);
+    s.setMaterial(m);
+
+    REQUIRE(s.getMaterial() == m);
+}

@@ -5,9 +5,11 @@
 #include "Ray.h"
 #include "Object.h"
 #include "Intersection.h"
+#include "Material.h"
 
 class Sphere : public Object {
     Matrix transform = Matrix::identity();
+    Material material;
 
 public:
     Sphere() {
@@ -35,11 +37,19 @@ public:
     }
 
     bool operator==(const Sphere &other) const {
-        return true;
+        return this->transform == other.transform && material == other.material;
     }
 
     Matrix getTransform() const {
         return transform;
+    }
+
+    Material getMaterial() const {
+        return material;
+    }
+
+    void setMaterial(const Material &material_) {
+        this->material = material_;
     }
 
     void setTransform(const Matrix &other) {

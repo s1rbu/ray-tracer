@@ -190,3 +190,19 @@ TEST_CASE("The cross product of two vectors") {
     REQUIRE(Vector::cross(v1, v2) == Vector(-1, 2, -1));
     REQUIRE(Vector::cross(v2, v1) == Vector(1,-2,1));
 }
+
+TEST_CASE("Reflecting a vector approaching at 45°") {
+    const Vector v(1, -1, 0);
+    const Vector n(0, 1, 0);
+    const Vector r = Vector::reflect(v, n);
+
+    REQUIRE(r == Vector(1,1,0));
+}
+
+TEST_CASE("Reflecting a vector off a slanted surface") {
+    const Vector v(0, -1, 0);
+    const Vector n(sqrt(2) / 2, sqrt(2) / 2, 0);
+    const Vector r = Vector::reflect(v, n);
+
+    REQUIRE(r == Vector(1,0,0));
+}
