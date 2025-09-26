@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "Ray.h"
+#include "Object.h"
+#include "Intersection.h"
 
 class Sphere : public Object {
     Matrix transform = Matrix::identity();
@@ -42,6 +44,15 @@ public:
 
     void setTransform(const Matrix &other) {
         transform = other;
+    }
+
+    static Vector normal_at(const Sphere &sphere, const Point &world_point) {
+        const Point object_point = Point(Matrix::inverse(sphere.transform) * world_point);
+        const Vector object_normal = object_point - Point(0, 0, 0);
+        Vector world_normal = Vector(Matrix::transpose(Matrix::inverse(sphere.transform)) * object_normal);
+        world_normal.setW(0);
+
+        return Vector::normalize(world_normal);
     }
 };
 

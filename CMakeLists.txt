@@ -30,4 +30,5 @@ add_executable(ray_tracer_tests
         tests/test_matrices.cpp
         tests/test_transformations.cpp
         tests/test_rays.cpp
+        tests/test_spheres.cpp
 )
