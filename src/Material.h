@@ -44,6 +44,10 @@ public:
         return shininess;
     }
 
+    void setSurfaceColor(const Color &color) {
+        this->surfaceColor = color;
+    }
+
     void setAmbient(const double ambient_) {
         this->ambient = std::clamp(ambient_, 0.0, 1.0);
     }

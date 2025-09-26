@@ -15,6 +15,9 @@ public:
     Sphere() {
     }
 
+    explicit Sphere(const Object &obj) : Object(obj) {
+    }
+
     static std::vector<Intersection> intersect(const Sphere &sphere, const Ray &ray) {
         const Ray ray2 = Ray::transform(ray, Matrix::inverse(sphere.getTransform()));
         const Vector sphereToRay = ray2.getOrigin() - Point(0, 0, 0);
@@ -44,9 +47,11 @@ public:
         return transform;
     }
 
-    Material getMaterial() const {
+    Material &getMaterial() override {
         return material;
     }
+
+    const Material &getMaterial() const override { return material; }
 
     void setMaterial(const Material &material_) {
         this->material = material_;
@@ -56,10 +61,10 @@ public:
         transform = other;
     }
 
-    static Vector normal_at(const Sphere &sphere, const Point &world_point) {
-        const Point object_point = Point(Matrix::inverse(sphere.transform) * world_point);
+    Vector normal_at(const Point &world_point) const override {
+        const Point object_point = Point(Matrix::inverse(transform) * world_point);
         const Vector object_normal = object_point - Point(0, 0, 0);
-        Vector world_normal = Vector(Matrix::transpose(Matrix::inverse(sphere.transform)) * object_normal);
+        Vector world_normal = Vector(Matrix::transpose(Matrix::inverse(transform)) * object_normal);
         world_normal.setW(0);
 
         return Vector::normalize(world_normal);
