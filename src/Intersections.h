@@ -10,7 +10,7 @@ std::vector<Intersection> intersections(const Is&... args) {
 }
 
 inline const Intersection *hit(const std::vector<Intersection> &xs) {
-    double min = std::numeric_limits<double>::infinity();
+    double min = std::numeric_limits<double>::max();
     const Intersection *minimum = nullptr;
     for (const auto &x : xs) {
         if (x.getT() < min && x.getT() >= 0) {

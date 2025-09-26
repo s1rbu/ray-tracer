@@ -4,7 +4,13 @@
 
 class Color : public Tuple {
 public:
+    Color() {
+    }
+
     Color(const double red, const double green, const double blue) : Tuple(red, green, blue, 0.0) {
+    }
+
+    explicit Color(const Tuple &tuple) : Tuple(tuple) {
     }
 
     double red() const {

@@ -54,6 +54,10 @@ public:
             v1.getX() * v2.getY() - v1.getY() * v2.getX()
         };
     }
+
+    static Vector reflect(const Vector &in, const Vector &normal) {
+        return in - Vector(normal * 2 * Vector::dot(in, normal));
+    }
 };
 
 #endif //RAY_TRACER_VECTOR_H

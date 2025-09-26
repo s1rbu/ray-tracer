@@ -3,12 +3,19 @@
 #include <vector>
 
 #include "Ray.h"
+#include "Object.h"
+#include "Intersection.h"
+#include "Material.h"
 
 class Sphere : public Object {
     Matrix transform = Matrix::identity();
+    Material material;
 
 public:
     Sphere() {
+    }
+
+    explicit Sphere(const Object &obj) : Object(obj) {
     }
 
     static std::vector<Intersection> intersect(const Sphere &sphere, const Ray &ray) {
@@ -33,15 +40,34 @@ public:
     }
 
     bool operator==(const Sphere &other) const {
-        return true;
+        return this->transform == other.transform && material == other.material;
     }
 
     Matrix getTransform() const {
         return transform;
     }
 
+    Material &getMaterial() override {
+        return material;
+    }
+
+    const Material &getMaterial() const override { return material; }
+
+    void setMaterial(const Material &material_) {
+        this->material = material_;
+    }
+
     void setTransform(const Matrix &other) {
         transform = other;
+    }
+
+    Vector normal_at(const Point &world_point) const override {
+        const Point object_point = Point(Matrix::inverse(transform) * world_point);
+        const Vector object_normal = object_point - Point(0, 0, 0);
+        Vector world_normal = Vector(Matrix::transpose(Matrix::inverse(transform)) * object_normal);
+        world_normal.setW(0);
+
+        return Vector::normalize(world_normal);
     }
 };
 
