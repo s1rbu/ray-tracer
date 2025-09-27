@@ -56,6 +56,10 @@ public:
         this->diffuse = std::clamp(diffuse_, 0.0, 1.0);
     }
 
+    void setSpecular(const double specular_) {
+        this->specular = std::clamp(specular_, 0.0, 1.0);
+    }
+
     bool operator==(const Material &other) const {
         return surfaceColor == other.surfaceColor && ambient == other.ambient && diffuse == other.diffuse && specular ==
                other.specular && shininess == other.shininess;
