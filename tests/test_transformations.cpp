@@ -157,3 +157,52 @@ TEST_CASE("Chained transformations must be applied in reverse order") {
 
     REQUIRE(T * p == Point(15, 0, 7));
 }
+
+TEST_CASE("The transformation matrix for the default orientation") {
+    const Point from(0, 0, 0);
+    const Point to(0, 0, -1);
+    const Vector up(0, 1, 0);
+
+    const Matrix t = Matrix::viewTransform(from, to, up);
+
+    REQUIRE(t == Matrix::identity());
+}
+
+TEST_CASE("A view transformation matrix looking in positive z direction") {
+    const Point from(0, 0, 0);
+    const Point to(0, 0, 1);
+    const Vector up(0, 1, 0);
+
+    const Matrix t = Matrix::viewTransform(from, to, up);
+
+    const Matrix expected = Matrix::scaling(-1, 1, -1);
+    REQUIRE(t == expected);
+}
+
+TEST_CASE("The view transformation moves the world") {
+    const Point from(0, 0, 8);
+    const Point to(0, 0, 0);
+    const Vector up(0, 1, 0);
+
+    const Matrix t = Matrix::viewTransform(from, to, up);
+
+    const Matrix expected = Matrix::translation(0, 0, -8);
+    REQUIRE(t == expected);
+}
+
+TEST_CASE("An arbitrary view transformation") {
+    const Point from(1, 3, 2);
+    const Point to(4, -2, 8);
+    const Vector up(1, 1, 0);
+
+    const Matrix t = Matrix::viewTransform(from, to, up);
+
+    const Matrix expected({
+        { -0.50709, 0.50709, 0.67612, -2.36643 },
+        { 0.76772, 0.60609, 0.12122, -2.82843 },
+        { -0.35857, 0.59761, -0.71714, 0.00000 },
+        { 0.00000, 0.00000, 0.00000, 1.00000 }
+    });
+
+    REQUIRE(t == expected);
+}
