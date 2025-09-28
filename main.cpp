@@ -2,11 +2,14 @@
 #include "Canvas.h"
 #include "Projectile.h"
 #include <fstream>
+
+#include "Camera.h"
 #include "CanvasUtils.h"
 #include "Intersection.h"
 #include "Intersections.h"
 #include "Matrix.h"
 #include "Sphere.h"
+#include "World.h"
 
 std::ofstream fout("output.ppm");
 
@@ -118,11 +121,84 @@ void chapter6() {
     fout << canvas2ppm(canvas);
 }
 
+World buildScene() {
+    World world;
+    world.getSpheres().clear();
+
+    world.setLight(Light(Point(-10, 10, -10), Color(1, 1, 1)));
+
+    Sphere floor;
+    floor.setTransform(Matrix::scaling(10, 0.01, 10));
+    floor.getMaterial().setSurfaceColor(Color(1, 0.9, 0.9));
+    floor.getMaterial().setSpecular(0);
+
+    Sphere leftWall;
+    leftWall.setTransform(
+        Matrix::translation(0, 0, 5) *
+        Matrix::rotationY(-M_PI / 4) *
+        Matrix::rotationX(M_PI / 2) *
+        Matrix::scaling(10, 0.01, 10)
+    );
+    leftWall.setMaterial(floor.getMaterial());
+
+    Sphere rightWall;
+    rightWall.setTransform(
+        Matrix::translation(0, 0, 5) *
+        Matrix::rotationY(M_PI / 4) *
+        Matrix::rotationX(M_PI / 2) *
+        Matrix::scaling(10, 0.01, 10)
+    );
+    rightWall.setMaterial(floor.getMaterial());
+
+    Sphere middle;
+    middle.setTransform(Matrix::translation(-0.5, 1, 0.5));
+    middle.getMaterial().setSurfaceColor(Color(0.1, 1, 0.5));
+    middle.getMaterial().setDiffuse(0.7);
+    middle.getMaterial().setSpecular(0.3);
+
+    Sphere right;
+    right.setTransform(
+        Matrix::translation(1.5, 0.5, -0.5) *
+        Matrix::scaling(0.5, 0.5, 0.5)
+    );
+    right.getMaterial().setSurfaceColor(Color(0.5, 1, 0.1));
+    right.getMaterial().setDiffuse(0.7);
+    right.getMaterial().setSpecular(0.3);
+
+    Sphere left;
+    left.setTransform(
+        Matrix::translation(-1.5, 0.33, -0.75) *
+        Matrix::scaling(0.33, 0.33, 0.33)
+    );
+    left.getMaterial().setSurfaceColor(Color(1, 0.8, 0.1));
+    left.getMaterial().setDiffuse(0.7);
+    left.getMaterial().setSpecular(0.3);
+
+    world.getSpheres().push_back(floor);
+    world.getSpheres().push_back(leftWall);
+    world.getSpheres().push_back(rightWall);
+    world.getSpheres().push_back(middle);
+    world.getSpheres().push_back(right);
+    world.getSpheres().push_back(left);
+
+    return world;
+}
+
 int main() {
     // chapter2();
     // chapter3();
     // chapter5();
-    chapter6();
+    // chapter6();
+    const World w = buildScene();
+    Camera camera(1920, 1080, M_PI / 3);
+    camera.setTransform(Matrix::viewTransform(
+        Point(0, 1.5, -5),
+        Point(0, 1, 0),
+        Vector(0, 1, 0)
+    ));
+
+    const Canvas image = camera.render(w);
+    fout << canvas2ppm(image);
 
     return 0;
 }
