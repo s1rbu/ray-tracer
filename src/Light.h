@@ -18,6 +18,10 @@ public:
     Color getIntensity() const {
         return intensity;
     }
+
+    bool operator==(const Light &other) const {
+        return position == other.position && intensity == other.intensity;
+    }
 };
 
 #endif //RAY_TRACER_LIGHT_H

@@ -243,6 +243,22 @@ public:
 
         return M;
     }
+
+    static Matrix viewTransform(const Point &from, const Point &to, const Vector &up) {
+        const Vector forward = Vector::normalize(to - from);
+        const Vector upn = Vector::normalize(up);
+        const Vector left = Vector::cross(forward, upn);
+        const Vector true_up = Vector::cross(left, forward);
+
+        const auto orientation = Matrix({
+            { left.getX(),     left.getY(),     left.getZ(),     0 },
+            { true_up.getX(),  true_up.getY(),  true_up.getZ(),  0 },
+            { -forward.getX(), -forward.getY(), -forward.getZ(), 0 },
+            { 0,               0,               0,               1 }
+        });
+
+        return orientation * Matrix::translation(-from.getX(), -from.getY(), -from.getZ());
+    }
 };
 
 #endif //RAY_TRACER_MATRIX_H

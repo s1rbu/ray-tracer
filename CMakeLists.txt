@@ -23,6 +23,9 @@ add_executable(ray_tracer main.cpp
         src/Intersections.h
         src/Light.h
         src/Material.h
+        src/World.h
+        src/Computations.h
+        src/Camera.h
 )
 
 add_executable(ray_tracer_tests
@@ -35,4 +38,7 @@ add_executable(ray_tracer_tests
         tests/test_spheres.cpp
         tests/test_lights.cpp
         tests/test_materials.cpp
+        tests/test_world.cpp
+        tests/test_intersections.cpp
+        tests/test_camera.cpp
 )
